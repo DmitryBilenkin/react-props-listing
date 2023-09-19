@@ -1,0 +1,8 @@
+.item-list {
+    column-gap:1rem;
+    margin:1rem 0 0;
+    padding:0;
+    opacity: 1;
+    -webkit-transition: opacity 300ms ease;
+    transition: opacity 300ms ease;
+  }
