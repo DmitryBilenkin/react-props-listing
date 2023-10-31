@@ -17,7 +17,7 @@ function Listing({items=[]}:IitemsProps) {
             };
         });
     }catch(e){
-        console.error(e);
+        console.warn(e);
     };
         
     const activeItems = items.filter(item => item.state === 'active');

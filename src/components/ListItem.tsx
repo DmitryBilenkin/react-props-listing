@@ -1,57 +1,41 @@
 import './ListItem.css';
-import { ReactNode, useState } from 'react';
 
 interface IitemProps {
     item: {
-        [key: string]: any
-    }
+        [key: string]: any    }
 };
 
 function ListItem({item}:IitemProps) {
-
-    const[title, setTitle] = useState<string>(item.title);
-    const [currency, setCurrency] = useState<string>(item.currency_code);
-    const [level, setLevel] = useState<string>('medium')
-
-    const titleHandler = (tit:string):ReactNode =>{
-        if(tit.length > 51){
-            const viewPart = tit.slice(0, 50);
-            const replPart = tit.slice(50).replace(/.+/,'...'); 
-
-            // console.log(tit);
-            // console.log(viewPart);
-            // console.log(replPart);
-            // console.log(viewPart + replPart);
-
-            // setTitle(viewPart + replPart); -----> cкрипт падает, не понимаю, почему
-            setTitle(viewPart) //-------> вывод без многоточия в конце
-        }
-        return <p className="item-title">{title}</p>
+    
+    function setTitle(){
+        if(item.title.length > 51){
+            return item.title.slice(0, 50) + item.title.slice(50).replace(/.+/,'...');
+        } else {
+            return item.title;
+        };
+    };
+    
+    function setCurrency(){
+        if(item.currency_code==='USD'){
+            return '$';
+        } else if(item.currency_code==='EUR'){
+            return String.fromCharCode(8364);
+        } else {
+            return item.currency_code;
+        }; 
     };
 
-    const currencyHandler = (curr:string):ReactNode=>{
-        if(curr==='USD'){
-            setCurrency('$');
-        } else if(curr==='EUR'){
-        setCurrency(String.fromCharCode(8364));
-        }    
-        return <p className="item-price">{curr + ' ' + item.price}</p>
-        }
-
-    const setLevelValue = (quant:number):ReactNode => {
-        console.log(quant)
-        if (quant <= 10){
-            setLevel('low')         
-        } else if (quant  > 10 && quant <= 20){
-            setLevel('medium')
-        } else if (quant  > 20){
-            setLevel('high')
-        }
-        return <p className = {'item-quantity level-' + level} >{quant}</p> //-----------> Не понятно, почему происходит многократный вызов. Скрипт падает
-        };   
+    function setLevel(){
+        if (item.quantity <= 10){
+            return "item-quantity level-low";        
+        } else if (item.quantity  > 10 && item.quantity <= 20){
+            return "item-quantity level-medium";    
+        } else if (item.quantity  > 20){
+            return "item-quantity level-high";  
+        };
+    }; 
             
-    return (
-       
+    return (       
         <div className="item">
             <div className="item-image">
                 <a href={item.url}>
@@ -59,13 +43,13 @@ function ListItem({item}:IitemProps) {
                 </a>
             </div>
             <div className="item-details">
-                {titleHandler(title)}
-                {currencyHandler(currency)}
-                {setLevelValue(item.quantity)}               
+                <p className="item-title">{setTitle()}</p>
+                <p className="item-price">{setCurrency() + ' ' + item.price}</p>
+                <p className={setLevel()}>{item.quantity} left</p>              
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default ListItem;
 
